@@ -31,7 +31,7 @@ public class MyOrdersController extends BaseController {
             @RequestParam Integer page,
             @ApiParam(name = "pageSize", value = "分页的每一页显示的条数", required = false)
             @RequestParam Integer pageSize) {
-
+        System.out.println("1");
         if (StringUtils.isBlank(userId)) {
             return IMOOCJSONResult.errorMsg(null);
         }
