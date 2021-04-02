@@ -10,7 +10,4 @@ import java.util.Map;
 public interface OrdersMapperCustom {
 
      List<MyOrdersVO> queryMyOrders(@Param("paramsMap") Map<String,Object> map);
-
-
-
 }
