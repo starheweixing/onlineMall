@@ -1,0 +1,6 @@
+# Project exclude paths
+/onlineMall-dev-api/target/
+/onlineMall-dev-common/target/
+/onlineMall-dev-mapper/target/
+/onlineMall-dev-pojo/target/
+/onlineMall-dev-service/target/
