@@ -40,9 +40,8 @@
         od.user_id = #{paramsMap.userId}
         and
         od.is_delete = 0
-
         <if test="paramsMap.orderStatus != null">
-            and os.orderStatus = #{paramsMap.orderStatus}
+            and os.order_status = #{paramsMap.orderStatus}
         </if>
         order by
         od.updated_time ASC

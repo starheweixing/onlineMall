@@ -174,6 +174,7 @@ public class OrderServiceImpl implements OrderService {
             int days = DateUtil.daysBetween(createTime, new Date());
             if(days >= 1){
                 //超过一天，关闭订单
+                doCloseOrder(os.getOrderId());
             }
         }
 
