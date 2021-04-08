@@ -8,6 +8,7 @@
         <result column="payMethod" property="payMethod"/>
         <result column="postAmount" property="postAmount"/>
         <result column="orderStatus" property="orderStatus"/>
+        <result column="isComment" property="isComment"/>
 
         <collection property="subOrderItemList"
                     select="getSubItems"
@@ -30,7 +31,8 @@
         od.pay_method as payMethod,
         od.real_pay_amount as realPayAmount,
         od.post_amount as postAmount,
-        os.order_status as orderStatus
+        os.order_status as orderStatus,
+        od.is_comment as isComment
         from
         orders od
         left join
@@ -62,38 +64,42 @@
     </select>
 
 
-    <!--    <select id="queryMyOrdersDoNotUse" resultMap="myOrdersVO" parameterType="Map">-->
-    <!--        select-->
-    <!--        od.id as orderId,-->
-    <!--        od.created_time as createdTime,-->
-    <!--        od.pay_method as payMethod,-->
-    <!--        od.real_pay_amount as realPayAmount,-->
-    <!--        od.post_amount as postAmount,-->
-    <!--        os.order_status as orderStatus,-->
-    <!--        oi.item_id as itemId,-->
-    <!--        oi.item_name as itemName,-->
-    <!--        oi.item_img as itemImg,-->
-    <!--        oi.item_spec_name as itemSpecName,-->
-    <!--        oi.buy_counts as buyCounts,-->
-    <!--        oi.price as price-->
-    <!--        from-->
-    <!--        orders od-->
-    <!--        left join-->
-    <!--        order_status os-->
-    <!--        on od.id = os.order_id-->
-    <!--        left join-->
-    <!--        order_items oi-->
-    <!--        on od.id = oi.order_id-->
-    <!--        where-->
-    <!--        od.user_id = #{paramsMap.userId}-->
-    <!--        and-->
-    <!--        od.is_delete = 0-->
+    <select id="getMyOrderStatusCounts" parameterType="Map" resultType="int">
+        select
+        count(1)
+        from
+        orders o
+        left join order_status os on
+        o.id = os.order_id
+        where
+        o.user_id = #{paramsMap.userId}
+        and
+        os.order_status = #{paramsMap.orderStatus}
+        <if test="paramsMap.isComment != null">
+            and o.is_comment = #{paramsMap.isComment}
+        </if>
+    </select>
 
-    <!--        <if test="paramsMap.orderStatus != null">-->
-    <!--            and os.orderStatus = #{paramsMap.orderStatus}-->
-    <!--        </if>-->
-    <!--        order by-->
-    <!--        od.updated_time ASC-->
-    <!--    </select>-->
+    <select id="getMyOrderTrend" parameterType="Map" resultType="com.heweixing.pojo.OrderStatus">
+        select
+            os.order_id as orderId,
+            os.order_status as orderStatus,
+            os.created_time as createdTime,
+            os.pay_time as payTime,
+            os.deliver_time as deliverTime,
+            os.success_time as successTime,
+            os.close_time as closeTime,
+            os.comment_time as commentTime
+        from
+            orders o
+        left join order_status os on
+            o.id = os.order_id
+        where
+            o.is_delete = 0
+            and o.user_id = #{paramsMap.userId}
+            and os.order_status in(20, 30, 40)
+        order by
+            os.order_id desc
+    </select>
 
 </mapper>

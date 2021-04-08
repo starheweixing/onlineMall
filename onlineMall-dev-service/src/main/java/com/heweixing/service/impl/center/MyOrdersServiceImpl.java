@@ -10,6 +10,7 @@ import com.heweixing.mapper.OrdersMapperCustom;
 import com.heweixing.pojo.OrderStatus;
 import com.heweixing.pojo.Orders;
 import com.heweixing.pojo.vo.MyOrdersVO;
+import com.heweixing.pojo.vo.OrderStatusCountsVO;
 import com.heweixing.service.center.MyOrdersService;
 import com.heweixing.utils.PagedGridResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MyOrdersServiceImpl implements MyOrdersService {
+public class MyOrdersServiceImpl extends BaseService implements MyOrdersService {
 
     @Autowired
     private OrdersMapperCustom ordersMapperCustom;
@@ -49,15 +50,15 @@ public class MyOrdersServiceImpl implements MyOrdersService {
         return setterPageGrid(list, page);
     }
 
-    private PagedGridResult setterPageGrid(List<?> list, Integer page) {
-        PageInfo<?> pageList = new PageInfo<>(list);
-        PagedGridResult grid = new PagedGridResult();
-        grid.setPage(page);                     // 当前页数
-        grid.setRows(list);                     // 当前页数
-        grid.setTotal(pageList.getPages());     //每行显示的内容
-        grid.setRecords(pageList.getTotal());   //总记录数
-        return grid;
-    }
+//    private PagedGridResult setterPageGrid(List<?> list, Integer page) {
+//        PageInfo<?> pageList = new PageInfo<>(list);
+//        PagedGridResult grid = new PagedGridResult();
+//        grid.setPage(page);                     // 当前页数
+//        grid.setRows(list);                     // 当前页数
+//        grid.setTotal(pageList.getPages());     //每行显示的内容
+//        grid.setRecords(pageList.getTotal());   //总记录数
+//        return grid;
+//    }
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
@@ -112,9 +113,41 @@ public class MyOrdersServiceImpl implements MyOrdersService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("id", orderId);
         criteria.andEqualTo("userId", userId);
-        int i = ordersMapper.updateByExampleSelective(updateOrder, example);
-        return i == 1 ? true : false;
+        int result = ordersMapper.updateByExampleSelective(updateOrder, example);
+        return result == 1 ? true : false;
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public OrderStatusCountsVO getOrderStatusCounts(String userId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("orderStatus", OrderStatusEnum.WAIT_PAY.type);
+        int waitPayCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
 
+        map.put("orderStatus", OrderStatusEnum.WAIT_DELIVER.type);
+        int waitDeliverCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
+
+        map.put("orderStatus", OrderStatusEnum.WAIT_RECEIVE.type);
+        int waitReceiveCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
+
+        map.put("orderStatus", OrderStatusEnum.SUCCESS.type);
+        map.put("isComment", YesOrNo.no.type);
+        int waitCommentCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
+
+        OrderStatusCountsVO orderStatusCountsVO = new OrderStatusCountsVO(waitPayCounts, waitDeliverCounts, waitReceiveCounts, waitCommentCounts);
+
+        return orderStatusCountsVO;
+    }
+
+    @Override
+    public PagedGridResult getOrdersTrend(String userId, Integer page, Integer pageSize) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        PageHelper.startPage(page,pageSize);
+        List<OrderStatus> list = ordersMapperCustom.getMyOrderTrend(map);
+        return setterPageGrid(list, page);
+
+    }
 }
