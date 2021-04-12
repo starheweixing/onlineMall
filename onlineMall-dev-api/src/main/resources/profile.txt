@@ -1,0 +1,15 @@
+profiles 配置梳理
+1.数据源配置
+1.1 url根据自身情况去修改为localhost 或者内网ip(集群或者分布式系统, 一定要使用内网ip)
+1.2 密码 root 改为服务器的数据库密码
+
+
+2.mybatis 日志打印
+
+
+3.图片保存目录 和图片请求路径配置
+file.imageUserFaceLocation=/workspaces/images/foodie/faces
+file.imageServerUrl=http://121.4.122.91:8088/foodie-dev-api/foodie/faces
+
+4.从支付中心回调天天吃货后端服务的回调地址。
+public static final String payReturnUrl = "http://121.4.122.91:8088/foodie-dev-api/orders/notifyMerchantOrderPaid";  //生产环境

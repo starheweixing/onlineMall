@@ -1,0 +1,17 @@
+server:
+  port: 8088
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/foodie-shop-dev?characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=Asia/Shanghai
+    password: 15521040419
+
+############################################################
+#
+# mybatis 配置
+#
+############################################################
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
