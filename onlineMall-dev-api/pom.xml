@@ -11,6 +11,8 @@
 
     <artifactId>onlineMall-dev-api</artifactId>
 
+    <packaging>war</packaging>
+
     <dependencies>
         <dependency>
             <groupId>com.heweixing</groupId>

@@ -13,3 +13,12 @@ file.imageServerUrl=http://121.4.122.91:8088/foodie-dev-api/foodie/faces
 
 4.从支付中心回调天天吃货后端服务的回调地址。
 public static final String payReturnUrl = "http://121.4.122.91:8088/foodie-dev-api/orders/notifyMerchantOrderPaid";  //生产环境
+
+5.打包方式 war 和jar
+ 1.jar是服务化的概念
+
+ 2.war 是应用程序的概念,也可以向外提供服务的接口
+
+
+
+

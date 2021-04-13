@@ -7,7 +7,6 @@ import com.heweixing.pojo.bo.UserBO;
 import com.heweixing.service.UserService;
 import com.heweixing.utils.DateUtil;
 import com.heweixing.utils.MD5Utils;
-import org.apache.catalina.User;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
