@@ -1,8 +1,11 @@
 package com.heweixing.service;
 
 import com.heweixing.pojo.OrderStatus;
+import com.heweixing.pojo.bo.ShopCartBO;
 import com.heweixing.pojo.bo.SubmitOrderBO;
 import com.heweixing.pojo.vo.OrderVO;
+
+import java.util.List;
 
 public interface OrderService {
 
@@ -11,7 +14,7 @@ public interface OrderService {
      * @param submitOrderBO
      * @return
      */
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO);
+    public OrderVO createOrder(List<ShopCartBO> shopCartBOList, SubmitOrderBO submitOrderBO);
 
     /**
      * 修改订单状态

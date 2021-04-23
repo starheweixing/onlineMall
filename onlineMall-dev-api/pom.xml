@@ -11,7 +11,7 @@
 
     <artifactId>onlineMall-dev-api</artifactId>
 
-    <packaging>war</packaging>
+<!--    <packaging>war</packaging>-->
 
     <dependencies>
         <dependency>

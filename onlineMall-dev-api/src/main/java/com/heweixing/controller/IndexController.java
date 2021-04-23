@@ -8,9 +8,12 @@ import com.heweixing.pojo.vo.NewItemsVO;
 import com.heweixing.service.CarouselService;
 import com.heweixing.service.CategoryService;
 import com.heweixing.utils.IMOOCJSONResult;
+import com.heweixing.utils.JsonUtils;
+import com.heweixing.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,11 +31,22 @@ public class IndexController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private RedisOperator redisOperator;
+
     @ApiOperation(value = "获取首页轮播图列表", notes = "获取首页轮播图列表", httpMethod = "GET")
     @GetMapping("/carousel")
     public IMOOCJSONResult carousel() {
-        List<Carousel> result = carouselService.queryAll(YesOrNo.yes.type);
-        return IMOOCJSONResult.ok(result);
+        List<Carousel> list = null;
+        String carouselStr = redisOperator.get("carousel");
+        if(StringUtils.isBlank(carouselStr)){
+            list = carouselService.queryAll(YesOrNo.yes.type);
+            redisOperator.set("carousel", JsonUtils.objectToJson(list));
+        }else{
+            list = JsonUtils.jsonToList(carouselStr, Carousel.class);
+        }
+
+        return IMOOCJSONResult.ok(list);
     }
 
 
