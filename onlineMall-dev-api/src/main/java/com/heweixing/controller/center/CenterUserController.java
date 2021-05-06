@@ -3,6 +3,7 @@ package com.heweixing.controller.center;
 import com.heweixing.controller.BaseController;
 import com.heweixing.pojo.Users;
 import com.heweixing.pojo.bo.center.CenterUserBO;
+import com.heweixing.pojo.vo.UsersVO;
 import com.heweixing.resource.FileUpload;
 import com.heweixing.service.center.CenterUserService;
 import com.heweixing.utils.CookieUtils;
@@ -59,9 +60,14 @@ public class CenterUserController extends BaseController {
         }
 
         Users userResult = centerUserService.updateUserInfo(userId, centerUserBO);
-        userResult = setNullProperty(userResult);
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(userResult), true);   //更新cookie
-        //TODO 后续要改，增加令牌token，会整合redis，分布式会话
+//      userResult = setNullProperty(userResult);
+
+        // 后续要改，增加令牌token，会整合redis，分布式会话
+        UsersVO usersVO = convertUsersVO(userResult);
+
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);   //更新cookie
+
+
         return IMOOCJSONResult.ok();
     }
 
@@ -116,12 +122,11 @@ public class CenterUserController extends BaseController {
                     // 获取文件的后缀名
                     String suffix = fileNameArr[fileNameArr.length - 1];
 
-                    if(!suffix.equalsIgnoreCase("png") &&
+                    if (!suffix.equalsIgnoreCase("png") &&
                             !suffix.equalsIgnoreCase("jpg") &&
-                            !suffix.equalsIgnoreCase("jpeg")){
+                            !suffix.equalsIgnoreCase("jpeg")) {
                         return IMOOCJSONResult.errorMsg("图片格式不正确");
                     }
-
 
 
                     //文件名重组,覆盖式上传 ,增量式可以是拼接当前时间     //face-{userId}.png
@@ -167,13 +172,13 @@ public class CenterUserController extends BaseController {
         //更新用户头像到数据库
         Users userResult = centerUserService.updateUserFace(userId, finalUserFaceUrl);
 
-        userResult = setNullProperty(userResult);
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(userResult), true);   //更新cookie
+        UsersVO usersVO = convertUsersVO(userResult);
 
-        //TODO 后续要改，增加令牌token，会整合redis，分布式会话
+//        userResult = setNullProperty(userResult);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);   //更新cookie
+
+        //后续要改，增加令牌token，会整合redis，分布式会话
 
         return IMOOCJSONResult.ok();
     }
-
-
 }

@@ -3,12 +3,14 @@ package com.heweixing.controller;
 import com.heweixing.pojo.Users;
 import com.heweixing.pojo.bo.ShopCartBO;
 import com.heweixing.pojo.bo.UserBO;
+import com.heweixing.pojo.vo.UsersVO;
 import com.heweixing.service.UserService;
 import com.heweixing.utils.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jdk.nashorn.internal.ir.JumpStatement;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,11 +78,14 @@ public class PassportController extends BaseController {
 
         //4.实现注册
         Users userResult = userService.createUsers(userBO);
-        // TODO 生成用户token，存入redis会话
-        // TODO 同步购物车数据
+//        userResult = setNullProperty(userResult);
+
+        UsersVO usersVO = convertUsersVO(userResult);
+
+        // 同步购物车数据
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
+
         synShopCartData(userResult.getId(), request, response);
-        userResult = setNullProperty(userResult);
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(userResult), true);
         return IMOOCJSONResult.ok();
     }
 
@@ -179,10 +184,9 @@ public class PassportController extends BaseController {
             return IMOOCJSONResult.errorMsg("用户名或者密码不正确");
         }
 
-        userResult = setNullProperty(userResult);
-
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(userResult), true);
-
+        // userResult = setNullProperty(userResult);
+        UsersVO usersVO = convertUsersVO(userResult);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
         //  生成用户token，存入redis会话
         //  同步购物车数据
         synShopCartData(userResult.getId(), request, response);
@@ -198,8 +202,10 @@ public class PassportController extends BaseController {
         //清除用户相关的信息
         CookieUtils.deleteCookie(request, response, "user");
 
-        //TODO 用户退出登录，清除购物车
-        //分布式会话中，清除用户信息
+        //用户退出登录，清除redis中user的会话信息
+        redisOperator.del(REDIS_USER_TOKEN + ":" + userId);
+
+        //分布式会话中，清除用户信息,购物车
         CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART);
         return IMOOCJSONResult.ok();
     }
