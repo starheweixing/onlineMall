@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="onlineMall-dev-common" />
         <module name="onlineMall-dev-pojo" />
         <module name="onlineMall-dev-service" />
-        <module name="onlineMall-dev-api" />
         <module name="onlineMall-dev-mapper" />
-        <module name="onlineMall-dev-common" />
+        <module name="onlineMall-dev-api" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

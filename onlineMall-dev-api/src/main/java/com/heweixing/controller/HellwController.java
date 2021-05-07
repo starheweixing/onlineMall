@@ -1,6 +1,8 @@
 package com.heweixing.controller;
 
-import org.springframework.stereotype.Controller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -8,14 +10,23 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+
 //@Controller
 @ApiIgnore
 @RestController  //返回的都是json对象
 public class HellwController {
 
+    final static Logger logger = LoggerFactory.getLogger(HellwController.class);
+
     @GetMapping("/hello")
     public Object hello(){
-        return "helloWord";
+
+        logger.debug("debug: hello---");
+        logger.info("info: hello---");
+        logger.warn("warn: hello---");
+        logger.error("error: hello---");
+
+        return "hello Word";
     }
 
 
@@ -28,6 +39,9 @@ public class HellwController {
         httpSession.getAttribute("userInfo");
         return "ok";
     }
+
+
+
 
 
 }
