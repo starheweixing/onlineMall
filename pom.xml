@@ -13,6 +13,7 @@
         <module>onlineMall-dev-mapper</module>
         <module>onlineMall-dev-service</module>
         <module>onlineMall-dev-api</module>
+        <module>onlineMall-sso</module>
     </modules>
     <packaging>pom</packaging>
 
