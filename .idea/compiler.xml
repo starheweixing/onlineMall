@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="onlineMall-sso" />
         <module name="onlineMall-dev-mapper" />
+        <module name="onlineMall-dev-search" />
         <module name="onlineMall-dev-service" />
         <module name="onlineMall-dev-api" />
         <module name="onlineMall-dev-common" />
@@ -24,6 +25,7 @@
       <module name="onlineMall-dev-common" options="-parameters" />
       <module name="onlineMall-dev-mapper" options="-parameters" />
       <module name="onlineMall-dev-pojo" options="-parameters" />
+      <module name="onlineMall-dev-search" options="-parameters" />
       <module name="onlineMall-dev-service" options="-parameters" />
       <module name="onlineMall-sso" options="-parameters" />
     </option>

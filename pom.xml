@@ -14,6 +14,7 @@
         <module>onlineMall-dev-service</module>
         <module>onlineMall-dev-api</module>
         <module>onlineMall-sso</module>
+        <module>onlineMall-dev-search</module>
     </modules>
     <packaging>pom</packaging>
 

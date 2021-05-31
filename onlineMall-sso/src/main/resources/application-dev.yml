@@ -11,12 +11,3 @@ spring:
     port: 6379
     password: root
 
-############################################################
-#
-# mybatis 配置
-#
-############################################################
-
-mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

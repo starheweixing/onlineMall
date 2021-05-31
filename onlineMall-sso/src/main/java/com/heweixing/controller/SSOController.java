@@ -3,10 +3,7 @@ package com.heweixing.controller;
 import com.heweixing.pojo.Users;
 import com.heweixing.pojo.vo.UsersVO;
 import com.heweixing.service.UserService;
-import com.heweixing.utils.IMOOCJSONResult;
-import com.heweixing.utils.JsonUtils;
-import com.heweixing.utils.MD5Utils;
-import com.heweixing.utils.RedisOperator;
+import com.heweixing.utils.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,6 +125,7 @@ public class SSOController {
 
         // 3.1 用户全局门票需要放入CAS端的cookie中
         setCookie(COOKIE_USER_TICKET, userTicket, response);
+       // CookieUtils.setCookie(request,response,COOKIE_USER_TICKET,userTicket,true);
 
         // 4. userTicket关联用户id，并且放入到redis中，代表这个用户有门票了，可以在各个景区游玩
         redisOperator.set(REDIS_USER_TICKET + ":" + userTicket, userResult.getId());
@@ -230,6 +228,7 @@ public class SSOController {
                            HttpServletResponse response) {
 
         Cookie cookie = new Cookie(key, val);
+      //  cookie.setDomain("sso.com");
         cookie.setDomain("sso.com");
         cookie.setPath("/");
         response.addCookie(cookie);

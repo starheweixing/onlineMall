@@ -6,8 +6,6 @@ server:
 #  port: 8088
   tomcat:
     uri-encoding: UTF-8
-
-
 ############################################################
 #
 # 配置数据源信息 #
@@ -44,6 +42,10 @@ spring:
     encoding: UTF-8
     prefix: classpath:/templates/
     suffix: .html
+  data:
+    elasticsearch:
+      cluster-name: imooc-elasticserach
+      cluster-nodes: 121.4.122.91:9300
 
 ############################################################
 #
